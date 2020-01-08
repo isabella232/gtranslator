@@ -53,7 +53,7 @@ static guint signals [N_SIGNALS];
 
 static void
 search_entry_populate_popup (GtrSearchBar *self,
-                             GtkWidget          *widget,
+                             GtkWidget    *widget,
                              GtkEntry     *entry)
 {
   g_assert (GTR_IS_SEARCH_BAR (self));
@@ -174,9 +174,9 @@ gtr_search_bar_get_replace_mode (GtrSearchBar *self)
 
 static void
 gtr_search_bar_get_property (GObject    *object,
-                                    guint       prop_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
+                             guint       prop_id,
+                             GValue     *value,
+                             GParamSpec *pspec)
 {
   GtrSearchBar *self = GTR_SEARCH_BAR (object);
 
@@ -197,7 +197,7 @@ gtr_search_bar_get_property (GObject    *object,
 
 void
 gtr_search_bar_set_replace_mode (GtrSearchBar *self,
-                                        gboolean            replace_mode)
+                                 gboolean      replace_mode)
 {
     g_return_if_fail (GTR_IS_SEARCH_BAR (self));
 
@@ -216,7 +216,7 @@ gtr_search_bar_set_replace_mode (GtrSearchBar *self,
 
 void
 gtr_search_bar_set_show_options (GtrSearchBar *self,
-                                        gboolean            show_options)
+                                 gboolean      show_options)
 {
   g_return_if_fail (GTR_IS_SEARCH_BAR (self));
 
@@ -233,9 +233,9 @@ gtr_search_bar_set_show_options (GtrSearchBar *self,
 
 static void
 gtr_search_bar_set_property (GObject      *object,
-                                    guint         prop_id,
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
+                             guint         prop_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
 {
   GtrSearchBar *self = GTR_SEARCH_BAR (object);
 
@@ -347,7 +347,7 @@ gtr_search_bar_get_search (GtrSearchBar *self)
 
 void
 gtr_search_bar_set_search (GtrSearchBar *self,
-                                  GtkSearchEntry    *search)
+                           GtkSearchEntry    *search)
 {
   g_return_if_fail (GTR_IS_SEARCH_BAR (self));
 
