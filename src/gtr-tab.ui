@@ -115,10 +115,11 @@
                   <property name="margin-right">12</property>
                   <property name="reveal-child">True</property>
                   <property name="visible">True</property>
+                  <signal name="notify::child-revealed" handler="gtr_page_notify_child_revealed" swapped="true" object="GtrTab"/>
                   <child>
                      <object class="GtrSearchBar" id="search_bar">
                         <property name="visible">True</property>
-                        <!--<signal name="stop-search" handler="gtr_page_stop_search" swapped="true" object="IdeEditorPage"/>-->
+                        <signal name="stop-search" handler="gtr_page_stop_search" swapped="true" object="GtrTab"/>
                      </object>
                   </child>
                </object>
