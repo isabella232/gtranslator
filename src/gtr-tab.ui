@@ -9,14 +9,14 @@
       <child>
          <object class="GtkOverlay" id="overlay">
             <property name="visible">True</property>
-           <property name="expand">True</property>
+            <property name="expand">True</property>
             <child type="overlay">
                <object class="GtkRevealer" id="search_revealer">
                   <property name="width-request">525</property>
                   <property name="halign">end</property>
                   <property name="valign">start</property>
                   <property name="margin-right">12</property>
-                  <property name="reveal-child">True</property>
+                  <property name="reveal-child">false</property>
                   <property name="visible">True</property>
                   <signal name="notify::child-revealed" handler="gtr_page_notify_child_revealed" swapped="true" object="GtrTab"/>
                   <child>
