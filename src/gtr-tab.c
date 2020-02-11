@@ -47,6 +47,7 @@
 #include "gtr-window.h"
 #include "gtr-progress.h"
 #include "gtr-search-bar.h"
+#include "gtr-actions.h"
 
 #include <glib.h>
 #include <glib-object.h>
@@ -108,7 +109,6 @@ typedef struct
   gint autosave_interval;
   guint autosave_timeout;
   guint autosave : 1;
-
   /*Blocking movement */
   guint blocking : 1;
 
@@ -116,9 +116,9 @@ typedef struct
   guint dispose_has_run : 1;
 
   /*Search Bar*/
-  GtkOverlay    *overlay;
-  GtkRevealer   *search_revealer;
-  GtrSearchBar *search_bar;
+  GtkOverlay     *overlay;
+  GtkRevealer    *search_revealer;
+  GtrSearchBar   *search_bar;
   GtkSearchEntry *search;
 } GtrTabPrivate;
 
@@ -147,7 +147,7 @@ static gboolean gtr_tab_autosave (GtrTab * tab);
 
 //---------------------------Search Bar Revealer------------------//
 
-static void
+void
 gtr_page_stop_search (GtrTab *tab,
                              GtrSearchBar *search_bar)
 {
@@ -161,7 +161,22 @@ gtr_page_stop_search (GtrTab *tab,
 
 }
 
-static void
+void
+gtr_tab_show_hide_search_bar (GtrTab *tab, GtrSearchBar *search_bar, gint count)
+{
+  GtrTabPrivate *priv;
+
+  priv = gtr_tab_get_instance_private (tab);
+  g_assert (GTR_IS_TAB (tab));
+  g_assert (GTR_IS_SEARCH_BAR (priv->search_bar));
+
+  if (count == 0)
+    { gtk_revealer_set_reveal_child (priv->search_revealer, TRUE); }
+  else
+    { gtk_revealer_set_reveal_child (priv->search_revealer, FALSE); }
+}
+
+void
 gtr_page_notify_child_revealed (GtrTab *tab,
                                        GParamSpec    *pspec,
                                        GtkRevealer   *revealer)
