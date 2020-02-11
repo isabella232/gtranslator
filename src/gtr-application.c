@@ -34,6 +34,8 @@
 #include "gtr-utils.h"
 #include "gtr-window.h"
 #include "gtr-preferences-dialog.h"
+#include "gtr-search-bar.h"
+#include "gtr-tab.h"
 
 #include <glib.h>
 #include <glib-object.h>
@@ -60,6 +62,15 @@ typedef struct
   gchar *last_dir;
 
   guint first_run : 1;
+
+   /*Search Bar*/
+  GtkOverlay     *overlay;
+  GtkRevealer    *search_revealer;
+  GtrSearchBar   *search_bar;
+  GtkSearchEntry *search;
+  GtkButton      *replace_all_button;
+  GtkButton      *replace_button;
+  GtkSearchEntry *replace_entry;
 } GtrApplicationPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (GtrApplication, gtr_application, GTK_TYPE_APPLICATION)
@@ -221,6 +232,8 @@ new_window_activated (GSimpleAction *action,
   gtk_application_add_window (GTK_APPLICATION (app), GTK_WINDOW (window));
 }
 
+
+
 static void
 find_activated (GSimpleAction *action,
                 GVariant      *parameter,
@@ -229,7 +242,23 @@ find_activated (GSimpleAction *action,
   GtrApplication *app = GTR_APPLICATION (user_data);
   GtrApplicationPrivate *priv = gtr_application_get_instance_private (app);
 
-  _gtr_actions_search_find (NULL, priv->active_window);
+  //_gtr_actions_search_find (NULL, priv->active_window);
+  GtrTab *active_tab = gtr_window_get_active_tab (priv->active_window);
+  gtr_tab_show_hide_search_bar (active_tab, priv->search_bar, 0);
+}
+
+static void
+find_unactivated (GSimpleAction *action,
+                GVariant      *parameter,
+                gpointer       user_data)
+{
+  GtrApplication *app = GTR_APPLICATION (user_data);
+  GtrApplicationPrivate *priv = gtr_application_get_instance_private (app);
+  gint count = 1;
+
+  //_gtr_actions_search_find (NULL, priv->active_window);
+  GtrTab *active_tab = gtr_window_get_active_tab (priv->active_window);
+  gtr_tab_show_hide_search_bar (active_tab, priv->search_bar, count);
 }
 
 static void
@@ -240,7 +269,9 @@ find_and_replace_activated (GSimpleAction *action,
   GtrApplication *app = GTR_APPLICATION (user_data);
   GtrApplicationPrivate *priv = gtr_application_get_instance_private (app);
 
-  _gtr_actions_search_replace (NULL, priv->active_window);
+  //_gtr_actions_search_replace (NULL, priv->active_window);
+  GtrTab *active_tab = gtr_window_get_active_tab (priv->active_window);
+  gtr_tab_show_hide_search_bar (active_tab, priv->search_bar,0);
 }
 
 static void
@@ -568,6 +599,7 @@ static GActionEntry app_entries[] = {
   { "copy_text", copy_text_activated, NULL, NULL, NULL },
   { "find_and_replace", find_and_replace_activated, NULL, NULL, NULL },
   { "find", find_activated, NULL, NULL, NULL },
+  { "find-off", find_unactivated, NULL, NULL, NULL},
   { "new_window", new_window_activated, NULL, NULL, NULL },
   { "preferences", preferences_activated, NULL, NULL, NULL },
   { "edit_header", edit_header_activated, NULL, NULL, NULL },
@@ -628,6 +660,7 @@ gtr_application_startup (GApplication *application)
 
   set_kb (application, "app.fuzzy", "<Ctrl>u");
   set_kb (application, "app.find", "<Ctrl>f");
+  set_kb (application, "app.find-off", "<Alt>q");
   set_kb (application, "app.find_and_replace", "<Ctrl>h");
 
   set_kb (application, "app.copy_text", "<Ctrl>space");
