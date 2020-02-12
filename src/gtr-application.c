@@ -253,11 +253,13 @@ find_unactivated (GSimpleAction *action,
                 gpointer       user_data)
 {
   GtrApplication *app = GTR_APPLICATION (user_data);
+
   GtrApplicationPrivate *priv = gtr_application_get_instance_private (app);
+
   gint count = 1;
 
-  //_gtr_actions_search_find (NULL, priv->active_window);
   GtrTab *active_tab = gtr_window_get_active_tab (priv->active_window);
+
   gtr_tab_show_hide_search_bar (active_tab, priv->search_bar, count);
 }
 
@@ -660,7 +662,7 @@ gtr_application_startup (GApplication *application)
 
   set_kb (application, "app.fuzzy", "<Ctrl>u");
   set_kb (application, "app.find", "<Ctrl>f");
-  set_kb (application, "app.find-off", "<Alt>q");
+  set_kb (application, "app.find-off", "Escape");
   set_kb (application, "app.find_and_replace", "<Ctrl>h");
 
   set_kb (application, "app.copy_text", "<Ctrl>space");
