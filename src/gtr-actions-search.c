@@ -267,7 +267,7 @@ find_in_list (GtrWindow * window,
 }
 
 void
-do_find (GtrSearchBar * dialog, GtrWindow * window)
+do_find (GtrSearchBar * dialog, GtrWindow * window, gboolean search_backwards)
 {
   GtrTab *tab;
   GList *views, *list;
@@ -278,7 +278,6 @@ do_find (GtrSearchBar * dialog, GtrWindow * window)
   gboolean match_case;
   gboolean entire_word;
   gboolean wrap_around;
-  gboolean search_backwards;
   guint flags = 0;
   guint old_flags = 0;
   gboolean found;
@@ -295,7 +294,6 @@ do_find (GtrSearchBar * dialog, GtrWindow * window)
   /* Flags */
   match_case = gtr_search_bar_get_match_case (dialog);
   entire_word = gtr_search_bar_get_entire_word (dialog);
-  search_backwards = gtr_search_bar_get_backwards (dialog);
   wrap_around = gtr_search_bar_get_wrap_around (dialog);
 
   if (!original_text && !translated_text)
@@ -332,10 +330,6 @@ do_find (GtrSearchBar * dialog, GtrWindow * window)
     phrase_found (dialog, 0);
   else
     phrase_not_found (dialog);
-
-  gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-                                     GTR_SEARCH_BAR_REPLACE_RESPONSE,
-                                     found);
 
   restore_last_searched_data (dialog, tab);
 }
@@ -397,7 +391,7 @@ do_replace (GtrSearchBar * dialog, GtrWindow * window)
                                               strlen (unescaped_search_text))
        != 0))
     {
-      do_find (dialog, window);
+      do_find (dialog, window, FALSE);
       g_free (unescaped_search_text);
       g_free (selected_text);
       gtr_tab_find_replace (tab, FALSE);
@@ -414,7 +408,7 @@ do_replace (GtrSearchBar * dialog, GtrWindow * window)
   g_free (selected_text);
   g_free (unescaped_replace_text);
 
-  do_find (dialog, window);
+  do_find (dialog, window, FALSE);
   gtr_tab_find_replace (tab, FALSE);
 }
 
@@ -507,7 +501,7 @@ search_bar_response_cb (GtrSearchBar *dialog,
   switch (response_id)
     {
     case GTR_SEARCH_BAR_FIND_RESPONSE:
-      do_find (dialog, window);
+      do_find (dialog, window, FALSE);
       break;
     case GTR_SEARCH_BAR_REPLACE_RESPONSE:
       do_replace (dialog, window);

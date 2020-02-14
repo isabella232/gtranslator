@@ -155,7 +155,8 @@ gboolean find_in_list (GtrWindow * window,
 
 
 void do_find (GtrSearchBar * dialog,
-              GtrWindow * window);
+              GtrWindow * window,
+              gboolean search_backwards);
 
 void do_replace (GtrSearchBar * dialog,
                  GtrWindow * window);

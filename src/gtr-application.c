@@ -244,6 +244,7 @@ find_activated (GSimpleAction *action,
 
   //_gtr_actions_search_find (NULL, priv->active_window);
   GtrTab *active_tab = gtr_window_get_active_tab (priv->active_window);
+  g_return_if_fail (active_tab != NULL);
   gtr_tab_show_hide_search_bar (active_tab, priv->search_bar, 0);
 }
 
